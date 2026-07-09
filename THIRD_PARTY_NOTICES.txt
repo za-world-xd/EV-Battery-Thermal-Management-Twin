@@ -1,0 +1,22 @@
+Drive schedule data
+
+WLTC Class 3b speed trace:
+Copyright 2013-2020 European Commission (JRC).
+Source: https://github.com/JRCSTU/wltp
+Revision: 18650f372044371ed994a161a93473a75e76d2a9
+File: wltp/cycles/V_class3b.txt
+Vendored without modification in simulator/cycles/wltc_class3b.txt.
+License: EUPL 1.1, reproduced in simulator/cycles/EUPL-1.1.txt.
+The rest of this project's original code remains under its MIT license.
+SHA256: 3df48abd608c5b01abf5c0d8c64a4e5c030f164b3bd98d4073361b46eb6fef67
+
+US06 speed trace:
+Source: United States Environmental Protection Agency.
+https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules
+https://www.epa.gov/system/files/other-files/2025-03/us06col.txt
+Vendored without modification in simulator/cycles/us06.txt.
+Federal government schedule data; original speed units are miles/hour.
+SHA256: 84e9d8cc16fcd4ee3c30c3880f333eb25b61352e56f24e453411a7245c725ad2
+
+These are speed schedules. Vehicle and battery calculations in this project do not
+constitute a certified emissions, range, or WLTP compliance test.
