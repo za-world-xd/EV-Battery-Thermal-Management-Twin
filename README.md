@@ -5,9 +5,10 @@ Parameters are illustrative and require experimental calibration.
 
 ## Available workflows
 
-Current interface: Python solver, FastAPI endpoints and request validation tests.
+Current interface: Streamlit workbench with baseline comparison and complete-node CSV export.
 
 ## Included components
 
 - Implement coupled cell physics and drive-load kernel.
 - Expose simulation and flow comparison through FastAPI.
+- Add thermal workbench and baseline comparisons.
