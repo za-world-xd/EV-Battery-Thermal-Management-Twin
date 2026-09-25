@@ -5,7 +5,7 @@ Parameters are illustrative and require experimental calibration.
 
 ## Available workflows
 
-Current interface: Dashboard, API and command-line replay of saved simulation JSON.
+Current interface: Local Python workflows and Docker Compose services.
 
 ## Included components
 
@@ -13,3 +13,4 @@ Current interface: Dashboard, API and command-line replay of saved simulation JS
 - Expose simulation and flow comparison through FastAPI.
 - Add thermal workbench and baseline comparisons.
 - Add saved-run command-line replay.
+- Package API and dashboard services for containers.

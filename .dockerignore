@@ -1,0 +1,13 @@
+.git
+.venv
+__pycache__
+.pytest_cache
+.ruff_cache
+artifacts
+data/private
+*.md
+.env*
+.coverage
+htmlcov
+*.egg-info
+.streamlit/secrets.toml
