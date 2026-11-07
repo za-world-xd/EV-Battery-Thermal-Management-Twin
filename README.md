@@ -1,10 +1,78 @@
 # EV-CellTwin
 
-A Python workbench for a representative lithium-ion cell and homogeneous battery pack
-coupled to a liquid cold plate.
-The project implements a 2RC electrical model, a two-to-eight-node thermal network,
-coolant hydraulics, a FastAPI endpoint, and a Streamlit dashboard. Parameters are
-illustrative. This is an educational simulator, not a calibrated pack twin or safety controller.
+EV-CellTwin is an educational electro-thermal simulation workbench for exploring how
+an electric-vehicle battery cell responds to changing electrical loads and liquid
+cooling conditions. It models one representative lithium-ion cell and can scale that
+cell to a homogeneous series/parallel pack. The project is intended to make the
+relationship between current, voltage, heat generation, temperature, coolant flow,
+and delivered energy visible in a reproducible local application.
+
+The default parameters are illustrative rather than measured. This project is not a
+calibrated digital twin, a battery-management system, a safety controller, or a
+replacement for experimentally validated engineering analysis.
+
+## What the project does
+
+For each simulation, EV-CellTwin:
+
+1. Selects a current, charging, drive-speed, or uploaded trace profile.
+2. Solves the cell's electrical state using an OCV model and two RC polarization
+   branches.
+3. Converts electrical losses and reversible heat into thermal generation.
+4. Propagates heat through a lumped two-to-eight-node finite-volume thermal network.
+5. Estimates cold-plate convection, coolant heat rejection, pressure drop, and pump
+   energy for the requested flow rate.
+6. Stops when illustrative SOC, voltage, or temperature limits are reached, while
+   recording warnings, energy balances, thermal exposure, and the complete time series.
+
+The same simulation engine powers all three interfaces:
+
+- **Streamlit dashboard** — interactively configure runs, inspect plots, compare flow
+  rates, pin a baseline, and export JSON or CSV results.
+- **FastAPI service** — submit simulations and flow sweeps programmatically through
+  `/api/v1/simulate` and `/api/v1/flow-sweep`; interactive OpenAPI documentation is
+  available at `/docs`.
+- **Command-line replay** — rerun a saved configuration or complete result without
+  opening a browser, which helps reproduce calculations after exporting them.
+
+## How the model is organized
+
+```text
+load profile / vehicle speed
+          |
+          v
+  electrical 2RC cell model ---> cell current, voltage, SOC, heat
+          |                                      |
+          v                                      v
+  pack scaling                         thermal network (2-8 nodes)
+                                                 |
+                              cold-plate hydraulics and coolant heat rejection
+                                                 |
+                                                 v
+                                  temperatures, energy, warnings, reports
+```
+
+The electrical model treats positive current as discharge and negative current as
+charge. A vehicle speed profile is converted to pack power using inertia, aerodynamic
+drag, rolling resistance, road grade, drivetrain efficiency, regenerative efficiency,
+and auxiliary load before the battery current is solved. The pack representation
+shares one state across all cells; it does not simulate cell imbalance, module
+gradients, or coolant manifold distribution.
+
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| [`simulator/`](simulator) | Core configuration, profiles, electrical, thermal, cooling, solver, analysis, and reporting code |
+| [`app/dashboard.py`](app/dashboard.py) | Streamlit user interface |
+| [`app/api.py`](app/api.py) | FastAPI application and HTTP endpoints |
+| [`data/`](data) | Example current/speed traces and an explicitly synthetic electrical map |
+| [`tests/`](tests) | Physics, API, reporting, feature, and dashboard-flow tests |
+| [`compose.yaml`](compose.yaml) | Docker Compose definition for the dashboard and API |
+
+Use the dashboard for exploration, the API for integration, and the CLI for
+repeatable offline runs. See the sections below for setup, request examples,
+supported profiles, exports, assumptions, and validation boundaries.
 
 ## Run locally
 
